@@ -12,7 +12,7 @@ function(input, output, session) {
   
   # Route select input box
   output$indicateurSelect <- renderUI({
-    indicateurs <- setdiff(names(indicateurs),"DÃ.aprtements.")
+    indicateurs <- setdiff(names(indicateurs),"departement")
     
     
     selectInput("indName", "indicateur", choices = indicateurs, selected = indicateurs[1])
@@ -35,7 +35,8 @@ function(input, output, session) {
       dt=FRA_dep_list[[2]]
     else if(input$simplify=="1")
       dt=FRA_dep_list[[3]]
-    
+    #### ATTENTION A L'ORDRE DES @POLYGONES vs  @data QU'ON VA UTILISER POUR CONSTRUIRE LES LABELS, VERIFIER QUE LES NOMS SONT COHERENTS SUR LA CARTE
+    dt@data=dt@data[order(dt@data$ID_2),]
     var=input$indName
     steps=quantile(dt@data[,var],0:8/8)
     pal <- colorBin("YlOrRd", domain = var,bins=steps)
